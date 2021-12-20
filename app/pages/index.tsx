@@ -90,6 +90,11 @@ const Home: BlitzPage = () => {
             <Link href="/projects">
               <a>/projects</a>
             </Link>
+            <br />
+            or{" "}
+            <Link href="/conversations">
+              <a>/conversations</a>
+            </Link>
           </p>
         </div>
         <div className="buttons" style={{ marginTop: "5rem" }}>

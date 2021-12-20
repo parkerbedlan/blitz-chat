@@ -1,5 +1,5 @@
 import { useState, ReactNode, PropsWithoutRef } from "react"
-import { Formik, FormikProps } from "formik"
+import { Formik, FormikHelpers, FormikProps } from "formik"
 import { validateZodSchema } from "blitz"
 import { z } from "zod"
 
@@ -10,7 +10,7 @@ export interface FormProps<S extends z.ZodType<any, any>>
   /** Text to display in the submit button */
   submitText?: string
   schema?: S
-  onSubmit: (values: z.infer<S>) => Promise<void | OnSubmitResult>
+  onSubmit: (values: z.infer<S>, formikBag: FormikHelpers<any>) => Promise<void | OnSubmitResult>
   initialValues?: FormikProps<z.infer<S>>["initialValues"]
 }
 
@@ -34,15 +34,15 @@ export function Form<S extends z.ZodType<any, any>>({
     <Formik
       initialValues={initialValues || {}}
       validate={validateZodSchema(schema)}
-      onSubmit={async (values, { setErrors }) => {
-        const { FORM_ERROR, ...otherErrors } = (await onSubmit(values)) || {}
+      onSubmit={async (values, formikBag) => {
+        const { FORM_ERROR, ...otherErrors } = (await onSubmit(values, formikBag)) || {}
 
         if (FORM_ERROR) {
           setFormError(FORM_ERROR)
         }
 
         if (Object.keys(otherErrors).length > 0) {
-          setErrors(otherErrors)
+          formikBag.setErrors(otherErrors)
         }
       }}
     >
