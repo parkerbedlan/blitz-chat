@@ -1,4 +1,5 @@
-import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
+import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized, connectMiddleware } from "blitz"
+import cors from "cors"
 
 const config: BlitzConfig = {
   middleware: [
@@ -6,6 +7,12 @@ const config: BlitzConfig = {
       cookiePrefix: "blitzChat",
       isAuthorized: simpleRolesIsAuthorized,
     }),
+    // connectMiddleware(
+    //   cors({
+    //     origin: (_, callback) => callback(null, true),
+    //     credentials: true,
+    //   })
+    // ),
   ],
   /* Uncomment this to customize the webpack config
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

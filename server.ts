@@ -1,34 +1,44 @@
 // server.ts
 import blitz from "blitz/custom-server"
-import { createServer } from "http"
+import { BlitzApiHandler } from "blitz"
+import * as http from "http"
+import * as socketio from "socket.io"
+import express, { Express, Request, Response } from "express"
 import { parse } from "url"
 import { log } from "next/dist/server/lib/logging"
 
 const { PORT = "3000" } = process.env
 const dev = process.env.NODE_ENV !== "production"
-const app = blitz({ dev })
-const handle = app.getRequestHandler()
+const blitzApp = blitz({ dev })
+const blitzHandler: BlitzApiHandler = blitzApp.getRequestHandler()
 
-app.prepare().then(() => {
-  createServer((req, res) => {
-    // Be sure to pass `true` as the second argument to `url.parse`.
-    // This tells it to parse the query portion of the URL.
-    const parsedUrl = parse(req.url!, true)
-    const { pathname, query } = parsedUrl
+blitzApp.prepare().then(async () => {
+  const app: Express = express()
+  const server: http.Server = http.createServer(app)
+  const io: socketio.Server = new socketio.Server()
+  io.attach(server)
 
-    if (pathname === "/hello") {
-      res.writeHead(200).end("world")
-      return
-    }
+  app.get("/hello", async (_: Request, res: Response) => {
+    res.send("Hello World")
+  })
 
-    if (pathname === "/a") {
-      // renders app/pages/a.tsx
-      app.render(req, res, "/a", query)
-      return
-    }
+  io.on("connection", (socket: socketio.Socket) => {
+    console.log("connection")
+    socket.emit("status", "Hello from Socket.io")
 
-    handle(req, res, parsedUrl)
-  }).listen(PORT, () => {
-    log.success(`Ready on http://localhost:${PORT}`)
+    socket.on("hi-from-client", (data) => {
+      console.log("hi-from-client received, sending hi-from-server")
+      socket.emit("hi-from-server", data)
+    })
+
+    socket.on("disconnect", () => {
+      console.log("client disconnected")
+    })
+  })
+
+  app.all("*", (req: any, res: any) => blitzHandler(req, res))
+
+  server.listen(PORT, () => {
+    console.log(`> Ready on http://localhost:${PORT}`)
   })
 })
