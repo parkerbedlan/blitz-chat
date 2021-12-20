@@ -17,6 +17,7 @@ export const EditConversation = () => {
     }
   )
   const [updateConversationMutation] = useMutation(updateConversation)
+  throw new Error("Sorry, this page is not yet implemented.")
 
   return (
     <>
@@ -37,12 +38,12 @@ export const EditConversation = () => {
           initialValues={conversation}
           onSubmit={async (values) => {
             try {
-              const updated = await updateConversationMutation({
-                id: conversation.id,
-                ...values,
-              })
-              await setQueryData(updated)
-              router.push(Routes.ShowConversationPage({ conversationId: updated.id }))
+              // const updated = await updateConversationMutation({
+              //   id: conversation.id,
+              //   ...values,
+              // })
+              // await setQueryData(updated)
+              // router.push(Routes.ShowConversationPage({ conversationId: updated.id }))
             } catch (error: any) {
               console.error(error)
               return {

@@ -6,6 +6,7 @@ import { ConversationForm, FORM_ERROR } from "app/conversations/components/Conve
 const NewConversationPage: BlitzPage = () => {
   const router = useRouter()
   const [createConversationMutation] = useMutation(createConversation)
+  throw new Error("Sorry, this page is not yet implemented.")
 
   return (
     <div>
