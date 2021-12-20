@@ -1,25 +1,12 @@
-import { Suspense, useState } from "react"
-import {
-  Head,
-  Link,
-  useRouter,
-  useQuery,
-  useParam,
-  BlitzPage,
-  useMutation,
-  Routes,
-  usePaginatedQuery,
-} from "blitz"
-import Layout from "app/core/layouts/Layout"
-import getConversation from "app/conversations/queries/getConversation"
 import deleteConversation from "app/conversations/mutations/deleteConversation"
-import getMessages from "app/messages/queries/getMessages"
-import { FORM_ERROR, MessageForm } from "app/messages/components/MessageForm"
-import createMessage from "app/messages/mutations/createMessage"
+import getConversation from "app/conversations/queries/getConversation"
+import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import Layout from "app/core/layouts/Layout"
 import { MessagesList } from "app/messages/components/MessagesList"
 import { NewMessageForm } from "app/messages/components/NewMessageForm"
+import { BlitzPage, Head, Link, Routes, useMutation, useParam, useQuery, useRouter } from "blitz"
+import { Suspense } from "react"
 import { userListToString } from "."
-import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 
 export const Conversation = () => {
   const router = useRouter()

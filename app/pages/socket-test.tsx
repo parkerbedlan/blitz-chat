@@ -38,6 +38,12 @@ const SocketTest: BlitzPage = () => {
 
       return newSocket as any
     })
+    return () => {
+      setSocket((sock) => {
+        sock?.disconnect()
+        return undefined
+      })
+    }
   }, [currentUser.id, roomId])
 
   return (
