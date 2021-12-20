@@ -22,17 +22,30 @@ blitzApp.prepare().then(async () => {
     res.send("Hello World")
   })
 
+  const sockets: socketio.Socket[] = []
+
   io.on("connection", (socket: socketio.Socket) => {
-    console.log("connection")
+    console.log("connection", socket.handshake.query)
+    sockets.push(socket)
+    const { roomId } = socket.handshake.query
+    if (roomId) socket.join(`blitz-chat-${roomId}`)
     socket.emit("status", "Hello from Socket.io")
 
     socket.on("hi-from-client", (data) => {
-      console.log("hi-from-client received, sending hi-from-server")
-      socket.emit("hi-from-server", data)
+      console.log("hi-from-client received, sending hi-from-server", data, socket.rooms)
+      // sockets.forEach((s) => s.emit("hi-from-server", data))
+      // https://socket.io/docs/v3/rooms/
+      socket.rooms.forEach((room) => {
+        if (room.startsWith("blitz-chat-")) {
+          io.to(room).emit("hi-from-server", data)
+          // socket.to(room).emit("hi-from-server", data)
+        }
+      })
     })
 
     socket.on("disconnect", () => {
       console.log("client disconnected")
+      socket.disconnect()
     })
   })
 
