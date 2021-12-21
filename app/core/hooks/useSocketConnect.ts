@@ -20,7 +20,7 @@ export const useSocketConnect: (
       if (query && Object.values(query).some((value) => !value)) return
       console.log("------------------------------")
       setSocket(() => {
-        const newSocket = io("http://localhost:3000", {
+        const newSocket = io(process.env.APP_ORIGIN as string, {
           query,
         })
 
