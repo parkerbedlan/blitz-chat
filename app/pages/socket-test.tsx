@@ -1,11 +1,8 @@
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
-import { BlitzPage, useParam, useRouter } from "blitz"
-import { useEffect, useState } from "react"
-import { Socket } from "socket.io"
-import io from "socket.io-client"
-import { DefaultEventsMap } from "socket.io/dist/typed-events"
-import Layout from "app/core/layouts/Layout"
 import { useSocketConnect } from "app/core/hooks/useSocketConnect"
+import Layout from "app/core/layouts/Layout"
+import { BlitzPage, useRouter } from "blitz"
+import { useState } from "react"
 
 const SocketTest: BlitzPage = () => {
   const currentUser = useCurrentUser()!
@@ -16,14 +13,14 @@ const SocketTest: BlitzPage = () => {
 
   const socket = useSocketConnect({ roomId, userId: currentUser.id }, [
     {
-      ev: "status",
+      on: "status",
       listener: (data) => {
         console.log(data)
         setReceived(data)
       },
     },
     {
-      ev: "hi-from-server",
+      on: "hi-from-server",
       listener: (data) => {
         console.log(data)
         setReceived(JSON.stringify(data, null, 2))

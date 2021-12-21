@@ -1,13 +1,14 @@
+import { useSocketStore } from "app/core/hooks/useSocketStore"
 import { useMutation } from "blitz"
 import createMessage from "../mutations/createMessage"
 import { FORM_ERROR, MessageForm } from "./MessageForm"
 
 export const NewMessageForm = ({ conversationId }: { conversationId: number }) => {
   const [createMessageMutation] = useMutation(createMessage)
+  const socket = useSocketStore((state) => state.socket)
 
   return (
     <>
-      <pre>serverHi</pre>
       <MessageForm
         submitText="Create Message"
         // TODO use a zod schema for form validation
@@ -22,6 +23,8 @@ export const NewMessageForm = ({ conversationId }: { conversationId: number }) =
               conversationId: conversationId!,
             })
             resetForm()
+            console.log("emitting new-message", message)
+            socket?.emit("new-message", message)
           } catch (error: any) {
             console.error(error)
             return {

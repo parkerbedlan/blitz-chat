@@ -6,6 +6,7 @@ import * as socketio from "socket.io"
 import express, { Express, Request, Response } from "express"
 import { parse } from "url"
 import { log } from "next/dist/server/lib/logging"
+import { Message } from "@prisma/client"
 
 const { PORT = "3000" } = process.env
 const dev = process.env.NODE_ENV !== "production"
@@ -27,20 +28,33 @@ blitzApp.prepare().then(async () => {
   io.on("connection", (socket: socketio.Socket) => {
     console.log("connection", socket.handshake.query)
     sockets.push(socket)
+
     const { roomId } = socket.handshake.query
-    if (roomId) socket.join(`blitz-chat-${roomId}`)
+    if (roomId) socket.join(`blitz-chat-socket-test-${roomId}`)
+
+    const { conversationId } = socket.handshake.query
+    if (conversationId) socket.join(`blitz-chat-${conversationId}`)
+
     socket.emit("status", "Hello from Socket.io")
 
+    // socket-test handling
     socket.on("hi-from-client", (data) => {
       console.log("hi-from-client received, sending hi-from-server", data, socket.rooms)
       // sockets.forEach((s) => s.emit("hi-from-server", data))
       // https://socket.io/docs/v3/rooms/
       socket.rooms.forEach((room) => {
-        if (room.startsWith("blitz-chat-")) {
+        if (room.startsWith("blitz-chat-socket-test-")) {
           io.to(room).emit("hi-from-server", data)
           // socket.to(room).emit("hi-from-server", data)
         }
       })
+    })
+
+    // conversation handling
+    socket.on("new-message", (data: Message) => {
+      console.log("new-message", data)
+      const roomName = `blitz-chat-${data.conversationId}`
+      io.to(roomName).emit("new-remote-message", data)
     })
 
     socket.on("disconnect", () => {

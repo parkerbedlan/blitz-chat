@@ -9,7 +9,7 @@ export const useSocketConnect: (
         [key: string]: any
       }
     | undefined,
-  onHandlers?: { ev: string; listener: (...args: any[]) => void }[]
+  onHandlers?: { on: string; listener: (...args: any[]) => void }[]
 ) => SocketOrUndefined = (query, onHandlers) => {
   const socket = useSocketStore((state) => state.socket)
   const setSocket = useSocketStore((state) => state.functionalSet)
@@ -25,7 +25,7 @@ export const useSocketConnect: (
         })
 
         onHandlers?.forEach((handler) => {
-          newSocket.on(handler.ev, handler.listener)
+          newSocket.on(handler.on, handler.listener)
         })
 
         return newSocket
