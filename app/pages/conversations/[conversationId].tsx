@@ -31,10 +31,6 @@ export const Conversation = () => {
         </h1>
         {/* <pre>{JSON.stringify(conversation, null, 2)}</pre> */}
 
-        <Link href={Routes.EditConversationPage({ conversationId: conversation.id })}>
-          <a>Edit</a>
-        </Link>
-
         <button
           type="button"
           onClick={async () => {

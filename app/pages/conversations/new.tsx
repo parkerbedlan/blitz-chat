@@ -2,11 +2,11 @@ import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createConversation from "app/conversations/mutations/createConversation"
 import { ConversationForm, FORM_ERROR } from "app/conversations/components/ConversationForm"
+import { CreateConversation } from "app/auth/validations"
 
 const NewConversationPage: BlitzPage = () => {
   const router = useRouter()
   const [createConversationMutation] = useMutation(createConversation)
-  throw new Error("Sorry, this page is not yet implemented.")
 
   return (
     <div>
@@ -14,11 +14,8 @@ const NewConversationPage: BlitzPage = () => {
 
       <ConversationForm
         submitText="Create Conversation"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
-        // schema={CreateConversation}
-        // initialValues={{}}
+        schema={CreateConversation}
+        initialValues={{ email: "" }}
         onSubmit={async (values) => {
           try {
             const conversation = await createConversationMutation(values)
