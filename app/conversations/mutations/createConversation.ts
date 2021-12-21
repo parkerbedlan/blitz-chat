@@ -17,6 +17,9 @@ export default resolver.pipe(
     if (!otherUser) {
       throw new Error("No user with that email address.")
     }
+    if (otherUser.id === ctx.session.userId) {
+      throw new Error("You cannot have a conversation with yourself.")
+    }
 
     // TODO: if a conversation w that person already exists, say "A conversation with that person already exists *here* (hyperlink)"
     await checkConversationExists(ctx, otherUser)
