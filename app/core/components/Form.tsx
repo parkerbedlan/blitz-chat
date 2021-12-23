@@ -2,6 +2,7 @@ import { useState, ReactNode, PropsWithoutRef } from "react"
 import { Formik, FormikHelpers, FormikProps } from "formik"
 import { validateZodSchema } from "blitz"
 import { z } from "zod"
+import { Button } from "@chakra-ui/react"
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -58,9 +59,9 @@ export function Form<S extends z.ZodType<any, any>>({
           )}
 
           {submitText && (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               {submitText}
-            </button>
+            </Button>
           )}
 
           <style global jsx>{`

@@ -4,21 +4,27 @@ import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import { ForgotPassword } from "app/auth/validations"
 import forgotPassword from "app/auth/mutations/forgotPassword"
+import { Wrapper } from "app/core/components/Wrapper"
+import { Text } from "@chakra-ui/react"
 
 const ForgotPasswordPage: BlitzPage = () => {
   const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword)
 
   return (
-    <div>
-      <h1>Forgot your password?</h1>
+    <Wrapper variant="small">
+      <Text fontSize="3xl" mb={4}>
+        Forgot your password?
+      </Text>
 
       {isSuccess ? (
         <div>
-          <h2>Request Submitted</h2>
-          <p>
+          <Text fontSize={"2xl"}>Request Submitted</Text>
+          <Text>
             If your email is in our system, you will receive instructions to reset your password
-            shortly. <h3>Remember to check your spam!</h3>
-          </p>
+            shortly.
+          </Text>
+          <br />
+          <Text fontSize={"2xl"}>Remember to check your spam!</Text>
         </div>
       ) : (
         <Form
@@ -38,7 +44,7 @@ const ForgotPasswordPage: BlitzPage = () => {
           <LabeledTextField name="email" label="Email" placeholder="Email" />
         </Form>
       )}
-    </div>
+    </Wrapper>
   )
 }
 

@@ -1,8 +1,11 @@
 import { Suspense } from "react"
-import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import { Head, Link as BlitzLink, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getConversations from "app/conversations/queries/getConversations"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import { Wrapper } from "app/core/components/Wrapper"
+import { BlitzChakraLink } from "app/core/components/BlitzChakraLink"
+import { Box, Button, Flex, Text } from "@chakra-ui/react"
 
 const ITEMS_PER_PAGE = 100
 
@@ -21,28 +24,33 @@ export const ConversationsList = () => {
 
   return (
     <div>
-      <ul>
-        {conversations.map((conversation) => {
+      <Box m={4}>
+        <hr />
+        {conversations.map((conversation, index) => {
           const display = userListToString(
             conversation.users.map((user) => user.user),
             currentUser.id
           )
           return (
-            <li key={conversation.id}>
-              <Link href={Routes.ShowConversationPage({ conversationId: conversation.id })}>
-                <a>{display}</a>
-              </Link>
-            </li>
+            <BlitzChakraLink
+              key={conversation.id}
+              href={Routes.ShowConversationPage({ conversationId: conversation.id })}
+              color={undefined}
+            >
+              <Box w={"100%"} border="1px" borderTop={index !== 0 ? "none" : undefined} p={4}>
+                {display}
+              </Box>
+            </BlitzChakraLink>
           )
         })}
-      </ul>
+      </Box>
 
-      <button disabled={page === 0} onClick={goToPreviousPage}>
+      <Button disabled={page === 0} onClick={goToPreviousPage} size="sm">
         Previous
-      </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
+      </Button>
+      <Button disabled={!hasMore} onClick={goToNextPage} ml={2} size="sm">
         Next
-      </button>
+      </Button>
     </div>
   )
 }
@@ -54,17 +62,20 @@ const ConversationsPage: BlitzPage = () => {
         <title>Conversations</title>
       </Head>
 
-      <div>
-        <p>
-          <Link href={Routes.NewConversationPage()}>
-            <a>Create Conversation</a>
-          </Link>
-        </p>
+      <Wrapper>
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <Text fontSize="2xl">Your Conversations</Text>
+          <BlitzChakraLink href={Routes.NewConversationPage()} color={undefined}>
+            <Button size={"sm"} colorScheme={"purple"}>
+              Start New Conversation
+            </Button>
+          </BlitzChakraLink>
+        </Flex>
 
         <Suspense fallback={<div>Loading...</div>}>
           <ConversationsList />
         </Suspense>
-      </div>
+      </Wrapper>
     </>
   )
 }

@@ -3,6 +3,8 @@ import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import login from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
+import { Text } from "@chakra-ui/react"
+import { BlitzChakraLink } from "app/core/components/BlitzChakraLink"
 
 type LoginFormProps = {
   onSuccess?: (user: PromiseReturnType<typeof login>) => void
@@ -13,7 +15,9 @@ export const LoginForm = (props: LoginFormProps) => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <Text fontSize={"3xl"} mb={4}>
+        Login
+      </Text>
 
       <Form
         submitText="Login"
@@ -38,14 +42,14 @@ export const LoginForm = (props: LoginFormProps) => {
         <LabeledTextField name="email" label="Email" placeholder="Email" />
         <LabeledTextField name="password" label="Password" placeholder="Password" type="password" />
         <div>
-          <Link href={Routes.ForgotPasswordPage()}>
-            <a>Forgot your password?</a>
-          </Link>
+          <BlitzChakraLink href={Routes.ForgotPasswordPage()}>
+            Forgot your password?
+          </BlitzChakraLink>
         </div>
       </Form>
 
       <div style={{ marginTop: "1rem" }}>
-        Or <Link href={Routes.SignupPage()}>Sign Up</Link>
+        Or <BlitzChakraLink href={Routes.SignupPage()}>Sign Up</BlitzChakraLink>
       </div>
     </div>
   )

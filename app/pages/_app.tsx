@@ -10,18 +10,22 @@ import {
 import LoginForm from "app/auth/components/LoginForm"
 import { Suspense } from "react"
 
+import { ChakraProvider } from "@chakra-ui/react"
+
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ErrorBoundary
-        FallbackComponent={RootErrorFallback}
-        onReset={useQueryErrorResetBoundary().reset}
-      >
-        {getLayout(<Component {...pageProps} />)}
-      </ErrorBoundary>
-    </Suspense>
+    <ChakraProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ErrorBoundary
+          FallbackComponent={RootErrorFallback}
+          onReset={useQueryErrorResetBoundary().reset}
+        >
+          {getLayout(<Component {...pageProps} />)}
+        </ErrorBoundary>
+      </Suspense>
+    </ChakraProvider>
   )
 }
 

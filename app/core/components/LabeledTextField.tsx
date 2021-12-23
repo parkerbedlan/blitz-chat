@@ -1,7 +1,10 @@
-import { forwardRef, PropsWithoutRef } from "react"
+import { forwardRef, PropsWithoutRef, ComponentPropsWithoutRef } from "react"
 import { useField, useFormikContext, ErrorMessage } from "formik"
 
-export interface LabeledTextFieldProps extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
+import { Input } from "@chakra-ui/input"
+import { FormControl, FormLabel } from "@chakra-ui/form-control"
+
+export interface LabeledTextFieldProps extends ComponentPropsWithoutRef<typeof Input> {
   /** Field name. */
   name: string
   /** Field label. */
@@ -18,11 +21,10 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
 
     return (
       <div {...outerProps}>
-        <label>
+        <FormLabel>
           {label}
-          <input {...input} disabled={isSubmitting} {...props} ref={ref} />
-        </label>
-
+          <Input {...input} disabled={isSubmitting} {...props} ref={ref} />
+        </FormLabel>
         <ErrorMessage name={name}>
           {(msg) => (
             <div role="alert" style={{ color: "red" }}>
@@ -30,23 +32,6 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
             </div>
           )}
         </ErrorMessage>
-
-        <style jsx>{`
-          label {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            font-size: 1rem;
-          }
-          input {
-            font-size: 1rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-            border: 1px solid purple;
-            appearance: none;
-            margin-top: 0.5rem;
-          }
-        `}</style>
       </div>
     )
   }
