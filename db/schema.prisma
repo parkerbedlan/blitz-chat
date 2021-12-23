@@ -23,7 +23,6 @@ model User {
 
   tokens        Token[]
   sessions      Session[]
-  project       Project[]
   message       Message[]
   conversations UserToConversation[]
 }
@@ -66,26 +65,6 @@ model Token {
 // enum TokenType {
 //   RESET_PASSWORD
 // }
-
-model Project {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  task      Task[]
-}
-
-model Task {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  completed Boolean  @default(false)
-  project   Project  @relation(fields: [projectId], references: [id])
-  projectId Int
-}
 
 model Conversation {
   id        Int                  @id @default(autoincrement())
