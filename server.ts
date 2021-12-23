@@ -22,6 +22,7 @@ blitzApp.prepare().then(async () => {
   app.get("/hello", async (_: Request, res: Response) => {
     res.send("Hello World")
   })
+  app.set("proxy", 1)
 
   const sockets: socketio.Socket[] = []
 

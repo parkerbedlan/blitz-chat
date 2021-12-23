@@ -6,6 +6,8 @@ const config: BlitzConfig = {
     sessionMiddleware({
       cookiePrefix: "blitzChat",
       isAuthorized: simpleRolesIsAuthorized,
+      secureCookies: process.env.NODE_ENV === "production",
+      domain: process.env.NODE_ENV === "production" ? ".sloper.us" : undefined,
     }),
     // connectMiddleware(
     //   cors({

@@ -1,0 +1,13 @@
+{
+  "name": "Blitz Chat",
+  "description": "A live chat application made using Blitz.js",
+  "keywords": ["nodejs", "blitz"],
+  "repository": "https://github.com/parkerbedlan/blitz-chat",
+  "scripts": {
+    "dokku": {
+      "predeploy": "npm run deploy"
+    }
+  },
+  "image": "parkerbedlan/blitz-chat",
+  "addons": ["dokku-postgres"]
+}
