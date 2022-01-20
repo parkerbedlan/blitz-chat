@@ -3,5 +3,3 @@
 # **Blitz Chat**
 
 ## Blitz Chat is a live chat application built using [Blitz.js](https://github.com/blitz-js/blitz) that uses [Socket.io](https://socket.io/) for handling realtime data.
-
-### It is currently hosted at https://blitz-chat.sloper.us/
